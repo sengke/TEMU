@@ -14,8 +14,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     nginx && \
     rm -rf /var/lib/apt/lists/*
 
-# Install required PHP extensions
-RUN docker-php-ext-install pdo_mysql mbstring exif bcmath gd zip
+# Install required PHP extensions (parallel compilation added with -j$(nproc))
+RUN docker-php-ext-install -j$(nproc) pdo_mysql mbstring exif bcmath gd zip
 
 # Copy Composer binary from official Composer image
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
